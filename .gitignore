@@ -1,0 +1,52 @@
+# Fitxers i directoris de build
+.gradle/                 # Directori de Gradle (inclou cachés, builds)
+/local.properties        # Configuració SDK local
+/.idea/                  # Configuració de l'IDE (Android Studio)
+.DS_Store                # Fitxers de macOS
+build/                   # Sortida de la compilació
+
+# Fitxers de configuració de Gradle i APKs
+*.iml                    # Fitxers de mòdul de l'IDE
+*.apk                    # Paquets d'aplicació Android
+*.ap_                    # Fitxers de recursos empaquetats
+*.aar                    # Android Archive (llibreries compilades)
+*.dex                    # Fitxers Dalvik Executable
+*.class                  # Fitxers de classe compilats
+*.jar                    # Java Archive
+
+# Fitxers de build de l'aplicació
+app/build/               # Sortida de la compilació del mòdul 'app'
+
+# Fitxers de depuració
+/captures/               # Captures d'Android Studio
+.externalNativeBuild/    # Fitxers de build natius
+/data/                   # Directori de dades
+.cxx/                    # Fitxers de build natius
+
+# Test resultes
+/test-results/           # Resultats dels tests
+/outputs/                # Sortides de build, incloent APKs i resultats de tests
+
+# Fitxers locals de la màquina virtual de Java
+/hs_err_pid* # Informes d'error de la JVM
+
+# Altres fitxers temporals o generats
+.kotlin/                 # Fitxers de configuració de Kotlin
+.project                 # Fitxers de projecte antics d'Eclipse (no haurien de ser-hi normalment, però per si de cas)
+.settings/               # Configuració d'Eclipse
+.classpath               # Configuració d'Eclipse
+
+# Gradle Wrapper (important, no ignorar!)
+# El directori gradle/wrapper conté els scripts del Gradle Wrapper.
+# Aquests SÍ que s'han d'incloure al control de versions per garantir que tothom utilitzi la mateixa versió de Gradle.
+# Per això, el directori 'gradle/' no està a la llista d'ignorats global.
+# Però ignorem la carpeta 'gradle/caches' si existís a nivell de projecte (ja està coberta per .gradle/ a dalt)
+
+# Fitxers relacionats amb Android Studio (no necessaris al repositori)
+# Fitxers .iml individuals dins de cada mòdul
+app/*.iml
+# Fitxers de configuració de l'IDE dins de la carpeta .idea (ja coberta)
+
+# Opcional: Ignorar els fitxers de firmes (si no es gestionen amb el control de versions)
+# my-release-key.keystore
+# debug.keystore
