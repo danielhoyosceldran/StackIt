@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
+    id("com.google.gms.google-services")
 }
 
 android {
@@ -57,4 +58,14 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
     implementation("androidx.navigation:navigation-compose:2.7.7")
+    // Import the Firebase BoM (Bill of Materials)
+    // When using the BoM, you don't specify versions for individual Firebase libraries
+    implementation(platform("com.google.firebase:firebase-bom:32.8.1")) // Check for the latest version!
+
+    // Add the dependency for Firebase Authentication
+    implementation("com.google.firebase:firebase-auth-ktx")
+
+    // Add the dependency for Firestore (we'll need it later in Phase 3)
+    // It's good practice to add it now if you're sure you'll use it.
+    implementation("com.google.firebase:firebase-firestore-ktx")
 }
