@@ -16,22 +16,32 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.ktx.Firebase
 
 import com.example.stackit.ui.screens.HomeScreen
 import com.example.stackit.ui.screens.AuthScreen
 import com.example.stackit.ui.theme.StackItTheme
 
-
 class MainActivity : ComponentActivity() {
+
+    // Initialize Firebase Auth instance
+    private lateinit var auth: FirebaseAuth
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        auth = Firebase.auth // Get the Firebase Auth instance
+
         setContent {
             StackItTheme {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background
                 ) {
-                    MyNavigationGraph() // This is the main entry point for navigation
+                    // Pass the auth instance to your NavGraph
+                    MyNavigationGraph(auth = auth)
                 }
             }
         }
@@ -39,16 +49,33 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun MyNavigationGraph() {
-    // `rememberNavController()` creates and remembers a NavController for the lifecycle of the Composable.
+fun MyNavigationGraph(auth: FirebaseAuth) { // Now accepts FirebaseAuth as a parameter
     val navController = rememberNavController()
 
     val ROUTE_AUTH = "auth_route"
     val ROUTE_HOME = "home_route"
 
-    var isLoggedIn by remember { mutableStateOf(false) }
+    // State to track if the user is logged in, initially unknown
+    var isLoggedIn by remember { mutableStateOf<Boolean?>(null) }
 
-    val startDestination = if (isLoggedIn) ROUTE_HOME else ROUTE_AUTH
+    // Use LaunchedEffect to observe Firebase authentication state
+    // This runs once when the Composable enters the composition
+    LaunchedEffect(key1 = Unit) {
+        // Add an Auth State Listener to observe changes in user login status
+        auth.addAuthStateListener { firebaseAuth ->
+            isLoggedIn = firebaseAuth.currentUser != null
+        }
+    }
+
+    // While authentication state is unknown (null), display nothing or a loading indicator
+    if (isLoggedIn == null) {
+        // You can display a CircularProgressIndicator or a loading screen here
+        // For simplicity, we'll just return for now
+        return
+    }
+
+    // Once the state is known, determine the starting destination
+    val startDestination = if (isLoggedIn == true) ROUTE_HOME else ROUTE_AUTH
 
     NavHost(
         navController = navController,
@@ -57,20 +84,19 @@ fun MyNavigationGraph() {
     ) {
         composable(ROUTE_AUTH) {
             AuthScreen(
-                onLoginClicked = {
-                    isLoggedIn = true // Simulate successful login
+                onLoginSuccess = { // Navigate to home on successful login/registration
                     navController.navigate(ROUTE_HOME) {
-                        popUpTo(ROUTE_AUTH) { inclusive = true }
+                        popUpTo(ROUTE_AUTH) { inclusive = true } // Clear back stack
                     }
                 }
             )
         }
         composable(ROUTE_HOME) {
             HomeScreen(
-                onLogoutClicked = {
-                    isLoggedIn = false // Simulate logout
+                //auth = auth, // Pass the auth instance to HomeScreen for logout
+                onLogoutClicked = { // Navigate to auth on successful logout
                     navController.navigate(ROUTE_AUTH) {
-                        popUpTo(ROUTE_HOME) { inclusive = true }
+                        popUpTo(ROUTE_HOME) { inclusive = true } // Clear back stack
                     }
                 }
             )
@@ -82,6 +108,9 @@ fun MyNavigationGraph() {
 @Composable
 fun DefaultPreview() {
     StackItTheme {
-        MyNavigationGraph() // Preview your navigation graph
+        // For preview, you need a FirebaseAuth instance. You can mock it,
+        // or simply preview individual screens (AuthScreen/HomeScreen) directly
+        // as a real Firebase Auth instance cannot be initialized in a preview.
+        // AuthScreen(onLoginSuccess = {}) // Example of previewing a single screen
     }
 }

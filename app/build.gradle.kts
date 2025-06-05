@@ -2,7 +2,7 @@ plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
-    id("com.google.gms.google-services")
+    id("com.google.gms.google-services") // Required for Firebase integration
 }
 
 android {
@@ -42,14 +42,23 @@ android {
 
 dependencies {
 
+    // AndroidX Core KTX
     implementation(libs.androidx.core.ktx)
+    // Lifecycle Runtime KTX (needed for lifecycleScope)
     implementation(libs.androidx.lifecycle.runtime.ktx)
+    // Activity Compose
     implementation(libs.androidx.activity.compose)
+
+    // Compose BOM (Bill of Materials): Manages Compose library versions
     implementation(platform(libs.androidx.compose.bom))
+
+    // UI, Graphics, Tooling, Material3: Versions are managed by the Compose BOM
     implementation(libs.androidx.ui)
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
+
+    // Tests
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
@@ -57,15 +66,17 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
-    implementation("androidx.navigation:navigation-compose:2.7.7")
-    // Import the Firebase BoM (Bill of Materials)
-    // When using the BoM, you don't specify versions for individual Firebase libraries
-    implementation(platform("com.google.firebase:firebase-bom:32.8.1")) // Check for the latest version!
 
-    // Add the dependency for Firebase Authentication
+    implementation("androidx.navigation:navigation-compose:2.8.0") // Compose Navigation
+
+    // Firebase BoM (Bill of Materials): Ensures compatibility across Firebase libraries
+    // Always check for the latest version: https://firebase.google.com/support/release-notes/android
+    implementation(platform("com.google.firebase:firebase-bom:33.1.0"))
+
+    // Firebase Authentication and Firestore dependencies (versions managed by BoM)
     implementation("com.google.firebase:firebase-auth-ktx")
-
-    // Add the dependency for Firestore (we'll need it later in Phase 3)
-    // It's good practice to add it now if you're sure you'll use it.
     implementation("com.google.firebase:firebase-firestore-ktx")
+
+    // For using .await() with Firebase tasks and Kotlin Coroutines
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
 }
