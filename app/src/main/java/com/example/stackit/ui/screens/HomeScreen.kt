@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ExitToApp
 import androidx.compose.material3.Button
@@ -33,11 +34,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stackit.ui.theme.StackItTheme
 import com.example.stackit.R
+import androidx.compose.foundation.lazy.items
 import androidx.compose.ui.graphics.Color
+
+//data class Collection(val id: String, val name: String, val description: String)
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HomeScreen(onLogoutClicked: () -> Unit) {
+    val collectionss = listOf(
+        "A", "B", "C", "D"
+        )
     Scaffold(
         topBar = {
             TopAppBar(
@@ -88,7 +95,18 @@ fun HomeScreen(onLogoutClicked: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                // Todo: Add code to create collections
+                if(collectionss.isEmpty()) {
+                    Text(text = "No collections found")
+                } else {
+                    LazyColumn(
+                        modifier = Modifier.fillMaxSize(),
+                        verticalArrangement = Arrangement.spacedBy(8.dp) // Space between list items
+                    ) {
+                        items(100) { collection ->
+                            Text(text = "$collection")
+                        }
+                    }
+                }
             }
         }
     }
