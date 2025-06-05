@@ -58,6 +58,7 @@ fun MyNavigationGraph(auth: FirebaseAuth) { // Now accepts FirebaseAuth as a par
     // State to track if the user is logged in, initially unknown
     var isLoggedIn by remember { mutableStateOf<Boolean?>(null) }
 
+
     // Use LaunchedEffect to observe Firebase authentication state
     // This runs once when the Composable enters the composition
     LaunchedEffect(key1 = Unit) {
