@@ -46,7 +46,7 @@ fun MyNavigationGraph() {
     val ROUTE_AUTH = "auth_route"
     val ROUTE_HOME = "home_route"
 
-    var isLoggedIn by remember { mutableStateOf(false) }
+    var isLoggedIn by remember { mutableStateOf(true) }
 
     val startDestination = if (isLoggedIn) ROUTE_HOME else ROUTE_AUTH
 
