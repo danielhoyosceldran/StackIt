@@ -1,5 +1,6 @@
 package com.example.stackit.ui.screens
 
+import android.view.GestureDetector
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,7 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ExitToApp
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
@@ -59,15 +61,17 @@ fun HomeScreen(onLogoutClicked: () -> Unit) {
                     }
                 },
                 actions = {
-                    Icon(
-                        Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout",
-                        modifier = Modifier.padding(end = 8.dp))
+                    IconButton(onClick = onLogoutClicked) {
+                        Icon(
+                            Icons.AutoMirrored.Filled.ExitToApp, contentDescription = "Logout",
+                            modifier = Modifier.padding(end = 8.dp))
+                    }
                 }
             )
         },
         floatingActionButton = {
             FloatingActionButton(
-                onClick = { onLogoutClicked },
+                onClick = { /* todo: Add code to create collection */ },
             ) {
                 Icon(Icons.Filled.Add, contentDescription = "Add")
             }
@@ -84,7 +88,7 @@ fun HomeScreen(onLogoutClicked: () -> Unit) {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                
+                // Todo: Add code to create collections
             }
         }
     }
