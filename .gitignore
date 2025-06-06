@@ -1,9 +1,10 @@
 # Fitxers i directoris de build
-.gradle/                 # Directori de Gradle (inclou cachés, builds)
+.gradle/**                 # Directori de Gradle (inclou cachés, builds)
 /local.properties        # Configuració SDK local
-/.idea/                  # Configuració de l'IDE (Android Studio)
+/.idea/**                  # Configuració de l'IDE (Android Studio)
 .DS_Store                # Fitxers de macOS
 build/                   # Sortida de la compilació
+app/build/
 
 # Fitxers de configuració de Gradle i APKs
 *.iml                    # Fitxers de mòdul de l'IDE
