@@ -23,6 +23,8 @@ import com.google.firebase.ktx.Firebase
 
 import com.example.stackit.ui.screens.HomeScreen
 import com.example.stackit.ui.screens.AuthScreen
+import com.example.stackit.ui.screens.CreateProfileScreen
+
 import com.example.stackit.ui.theme.StackItTheme
 
 class MainActivity : ComponentActivity() {
@@ -54,6 +56,7 @@ fun MyNavigationGraph(auth: FirebaseAuth) { // Now accepts FirebaseAuth as a par
 
     val ROUTE_AUTH = "auth_route"
     val ROUTE_HOME = "home_route"
+    val ROUTE_CREATE_PROFILE = "create_profile_route"
 
     // State to track if the user is logged in, initially unknown
     var isLoggedIn by remember { mutableStateOf<Boolean?>(null) }
@@ -88,6 +91,23 @@ fun MyNavigationGraph(auth: FirebaseAuth) { // Now accepts FirebaseAuth as a par
                 onLoginSuccess = { // Navigate to home on successful login/registration
                     navController.navigate(ROUTE_HOME) {
                         popUpTo(ROUTE_AUTH) { inclusive = true } // Clear back stack
+                    }
+                },
+                onRegisterSuccess = {
+                    // Después de registro, ir a CreateProfileScreen
+                    navController.navigate(ROUTE_CREATE_PROFILE) {
+                        popUpTo(ROUTE_AUTH) { inclusive = true }
+                    }
+                }
+            )
+        }
+        composable(ROUTE_CREATE_PROFILE) {
+            CreateProfileScreen(
+                auth = auth,
+                onProfileCreated = {
+                    navController.navigate(ROUTE_HOME) {
+                        popUpTo(ROUTE_CREATE_PROFILE) { inclusive = true }
+                        popUpTo(ROUTE_AUTH) { inclusive = true } // Limpiar también AuthScreen
                     }
                 }
             )

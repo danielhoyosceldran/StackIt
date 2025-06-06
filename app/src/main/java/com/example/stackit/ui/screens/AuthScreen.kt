@@ -16,7 +16,10 @@ import kotlinx.coroutines.tasks.await // Import to use .await()
 
 @OptIn(ExperimentalMaterial3Api::class) // Opt-in for experimental Material3 APIs
 @Composable
-fun AuthScreen(onLoginSuccess: () -> Unit) {
+fun AuthScreen(
+    onLoginSuccess: () -> Unit,
+    onRegisterSuccess: () -> Unit
+){
     val context = LocalContext.current
     val scope = rememberCoroutineScope() // Coroutine scope for async operations
     val auth: FirebaseAuth = Firebase.auth // Get Firebase Auth instance
@@ -63,7 +66,7 @@ fun AuthScreen(onLoginSuccess: () -> Unit) {
                     try {
                         auth.createUserWithEmailAndPassword(email, password).await() // Await the async task
                         Toast.makeText(context, "Registration successful.", Toast.LENGTH_SHORT).show()
-                        onLoginSuccess() // Notify parent of successful login
+                        onRegisterSuccess()
                     } catch (e: Exception) {
                         Toast.makeText(context, "Registration failed: ${e.message}", Toast.LENGTH_LONG).show()
                     } finally {
